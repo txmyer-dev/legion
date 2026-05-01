@@ -23,7 +23,7 @@ Legion is a real-time, multimodal, agentic assistant designed specifically for a
 
 ## 4. Key Workflows & Features
 ### A. The Conversation Loop
-*   **Trigger:** Wake-word ("Hey Legion") or push-to-talk to minimize API costs and prevent continuous hot-mic eavesdropping.
+*   **Trigger:** Wake-word ("We Are Legion") and a physical hotkey. The active trigger will depend on the environment and context.
 *   **Execution:** Audio buffers are base64-encoded and sent over WSS. System plays back received base64 chunks seamlessly.
 
 ### B. Heuristic Vision
@@ -38,7 +38,7 @@ Legion is a real-time, multimodal, agentic assistant designed specifically for a
 *   **Model:** `gemini-2.0-flash-exp` (or the latest available fast-tier multimodal model).
 *   **Dependencies:** Playwright/Puppeteer, WebSocket client, Audio/Video bindings.
 
-## 6. Open Questions / Next Steps
-1.  **Wake-word vs. Continuous:** Need to finalize if we use a wake-word engine (like Picovoice Porcupine) or a physical hotkey.
-2.  **Persona Schemas:** Define the exact JSON schema for the two personas to be uploaded later.
-3.  **Local Security:** Determine the extent of filesystem access allowed (e.g., scoped only to `~/sb/` or full user directory).
+## 6. Resolved Architectural Decisions
+1.  **Trigger Mechanism:** The system will support both a wake-word ("We Are Legion") and a physical hotkey, allowing the user to toggle depending on their current environment.
+2.  **Persona Schemas:** The persona baseline will be established using the `~/sb/5ekko` structure (copied to `/personas`), which will be adapted for Legion.
+3.  **Local Security Boundary:** Filesystem access on the Windows device will be strictly scoped to `C:\Users\txmye_ficivtv\My Drive\sb`.

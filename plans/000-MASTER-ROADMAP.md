@@ -11,6 +11,7 @@
 - [x] Implement path traversal sandbox in `tools.ts` (`C:\Users\txmye_ficivtv\My Drive\sb`).
 - [x] Implement shell command whitelist (`dir`, `ls`, etc.).
 - [x] Implement dynamic Persona Loader pulling from `~/sb/5ekko`.
+- [ ] **Task 1.6 (Refactor):** Refactor Persona Loader to enforce explicit `SOUL.md`, `TOOLS.md`, and `AGENTS.md` context separation.
 - [x] Establish bidirectional WebSocket connection to Gemini Multimodal Live API.
 - [x] Abstract audio I/O using Python `pyaudio` bridges for Windows native support.
 
@@ -40,15 +41,16 @@
 - [ ] **Task 4.2: Calendar Integration.** Build the `manage_calendar` tool using Google Calendar API.
 - [ ] **Task 4.3: Compound Engineering Tools.** Expose tools allowing the agent to trigger `/compound` and `/explore` workflows so it can document its own solutions.
 - [ ] **Task 4.4: Image Generation Tool.** Implement the `generate_cartoon_avatar` tool or equivalent image manipulation capabilities.
+- [ ] **Task 4.5: Advanced Sandboxing.** Upgrade the basic command whitelist to an `OpenShell` or Docker-based isolation environment for secure local execution.
 
 ---
 
-## ⚪ Phase 5: The "Always-On" Daemon
-**Objective:** Remove the need to manually start the script; make it a true invisible OS layer.
-- [ ] **Task 5.1: Wake-Word Engine.** Integrate Picovoice Porcupine (or an equivalent local model) to constantly listen for "We Are Legion" without streaming to Google.
-- [ ] **Task 5.2: Hardware Hotkey.** Implement a global Windows shortcut listener (using `node-global-key-listener` or similar) to trigger the agent manually.
-- [ ] **Task 5.3: Connection Manager.** Refactor the Orchestrator to only open the WebSocket connection when the wake-word/hotkey is triggered, and close it when the conversation naturally ends (to save API bandwidth/costs).
-- [ ] **Task 5.4: Background Service.** Configure the application to run invisibly as a Windows Service or system tray application.
+## ⚪ Phase 5: The "Always-On" Gateway & Daemon
+**Objective:** Transition from a monolith to a Gateway/Node architecture. Run the heavy Orchestrator on the Linux VPS, and a lightweight background Node natively on Windows 11.
+- [ ] **Task 5.1: Gateway/Node Split.** Decouple the local hardware scripts (`pyaudio`/OpenCV) from the Gemini WebSocket Orchestrator. The Windows Node will connect to the Linux Gateway over WebSockets.
+- [ ] **Task 5.2: Wake-Word Engine.** Integrate Picovoice Porcupine (or an equivalent local model) with a continuous ring buffer (OpenClaw style) to constantly listen for "We Are Legion" on the Windows Node.
+- [ ] **Task 5.3: Hardware Hotkey.** Implement a global Windows shortcut listener to trigger the agent manually without voice.
+- [ ] **Task 5.4: Background Service.** Configure the Windows Node to run invisibly as a Windows Service or system tray application, only streaming audio to the Gateway when triggered.
 
 ---
 

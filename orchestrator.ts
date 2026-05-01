@@ -128,6 +128,45 @@ export class LegionOrchestrator {
                 },
                 required: ["action"]
               }
+            },
+            {
+              name: "manage_calendar",
+              description: "Manage Google Calendar events.",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  action: { type: "STRING", description: "list_events, create_event" },
+                  maxResults: { type: "INTEGER", description: "Max events to list" },
+                  summary: { type: "STRING", description: "Event title" },
+                  description: { type: "STRING", description: "Event description" },
+                  start: { type: "STRING", description: "ISO string for event start" },
+                  end: { type: "STRING", description: "ISO string for event end" }
+                },
+                required: ["action"]
+              }
+            },
+            {
+              name: "trigger_compound_workflow",
+              description: "Trigger a local compound workflow shell script (e.g., compound-dashboard, compound-health).",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  workflow: { type: "STRING", description: "The name of the workflow script without the .sh extension (e.g. 'compound-dashboard', 'update-solution-ref')" }
+                },
+                required: ["workflow"]
+              }
+            },
+            {
+              name: "generate_image",
+              description: "Generate an image using DALL-E 3 based on a text prompt.",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  prompt: { type: "STRING", description: "The descriptive text prompt for the image." },
+                  size: { type: "STRING", description: "The size of the image, e.g., '1024x1024'" }
+                },
+                required: ["prompt"]
+              }
             }
           ]
         }

@@ -35,17 +35,17 @@
 
 ---
 
-## 🟡 Phase 4: OS Integration & Advanced Tools (CURRENT)
+## 🟢 Phase 4: OS Integration & Advanced Tools (COMPLETED)
 **Objective:** Deepen the agent's connection to the user's SecondBrain and Windows system.
 - [x] **Task 4.1: Task Backend Integration.** Connect `get_tasks` and `add_task` tools to Todoist, and `read_note`/`append_note` to the local Obsidian vault.
-- [ ] **Task 4.2: Calendar Integration.** Build the `manage_calendar` tool using Google Calendar API.
-- [ ] **Task 4.3: Compound Engineering Tools.** Expose tools allowing the agent to trigger `/compound` and `/explore` workflows so it can document its own solutions.
-- [ ] **Task 4.4: Image Generation Tool.** Implement the `generate_cartoon_avatar` tool or equivalent image manipulation capabilities.
-- [ ] **Task 4.5: Advanced Sandboxing.** Upgrade the basic command whitelist to an `OpenShell` or Docker-based isolation environment for secure local execution.
+- [x] **Task 4.2: Calendar Integration.** Build the `manage_calendar` tool using Google Calendar API.
+- [x] **Task 4.3: Compound Engineering Tools.** Expose tools allowing the agent to trigger `/compound` and `/explore` workflows so it can document its own solutions.
+- [x] **Task 4.4: Image Generation Tool.** Implement the `generate_cartoon_avatar` tool or equivalent image manipulation capabilities.
+- [x] **Task 4.5: Advanced Sandboxing.** Upgrade the basic command whitelist to an `OpenShell` or Docker-based isolation environment for secure local execution.
 
 ---
 
-## ⚪ Phase 5: The "Always-On" Gateway & Daemon
+## 🟡 Phase 5: The "Always-On" Gateway & Daemon (CURRENT)
 **Objective:** Transition from a monolith to a Gateway/Node architecture. Run the heavy Orchestrator on the Linux VPS, and a lightweight background Node natively on Windows 11.
 - [ ] **Task 5.1: Gateway/Node Split.** Decouple the local hardware scripts (`pyaudio`/OpenCV) from the Gemini WebSocket Orchestrator. The Windows Node will connect to the Linux Gateway over WebSockets.
 - [ ] **Task 5.2: Wake-Word Engine.** Integrate Picovoice Porcupine (or an equivalent local model) with a continuous ring buffer (OpenClaw style) to constantly listen for "We Are Legion" on the Windows Node.

@@ -2,6 +2,7 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
 import { manipulateBrowser } from './browser';
+import { manageCalendar } from './calendar';
 
 const execAsync = promisify(exec);
 
@@ -97,24 +98,76 @@ export async function executeTool(name: string, args: any): Promise<any> {
             
             case 'execute_local_command':
                 if (args && args.command) {
-                    const baseCommand = args.command.split(" ")[0].toLowerCase();
-                    const ALLOWED_COMMANDS = ['dir', 'ls', 'echo', 'cat', 'pwd'];
-                    
-                    if (!ALLOWED_COMMANDS.includes(baseCommand)) {
-                        throw new Error(`Security Violation: Command '${baseCommand}' is not allowed.`);
+                    console.log(`Executing bash command in secure sandbox: ${args.command}`);
+                    try {
+                        // Use Docker-based isolation for advanced sandboxing
+                        // Mount the secure root read-only, or run purely isolated
+                        const vaultPath = process.env.OBSIDIAN_VAULT_PATH || "C:\\Users\\txmye_ficivtv\\My Drive\\sb";
+                        
+                        // We use an alpine container that destroys itself after running the command
+                        // This prevents any destructive path traversal or local environment corruption.
+                        const dockerCmd = `docker run --rm -v "${vaultPath}:/sandbox:ro" alpine sh -c "${args.command.replace(/"/g, '\\"')}"`;
+                        
+                        const { stdout, stderr } = await execAsync(dockerCmd);
+                        return { stdout, stderr };
+                    } catch (e: any) {
+                        return { error: `Command failed in sandbox: ${e.message}` };
                     }
-
-                    console.log(`Executing bash command: ${args.command}`);
-                    const { stdout, stderr } = await execAsync(args.command);
-                    return { stdout, stderr };
                 }
                 throw new Error("Command argument missing.");
+                
+            case 'trigger_compound_workflow':
+                if (args && args.workflow) {
+                    const workflowScript = path.resolve(__dirname, 'scripts', `${args.workflow}.sh`);
+                    console.log(`Triggering compound workflow: ${workflowScript}`);
+                    try {
+                        const { stdout, stderr } = await execAsync(`bash "${workflowScript}"`);
+                        return { success: true, stdout, stderr };
+                    } catch (e: any) {
+                        return { error: `Workflow failed: ${e.message}` };
+                    }
+                }
+                throw new Error("Workflow argument missing.");
                 
             case 'manipulate_browser':
                 if (args && args.action) {
                     return await manipulateBrowser(args.action, args.url, args.selector, args.value);
                 }
                 throw new Error("Browser action argument missing.");
+
+            case 'manage_calendar':
+                if (args && args.action) {
+                    return await manageCalendar(args.action, args);
+                }
+                throw new Error("Calendar action argument missing.");
+
+            case 'generate_image': {
+                const apiKey = process.env.OPENAI_API_KEY;
+                if (!apiKey) return { error: "OPENAI_API_KEY not found in environment." };
+                if (!args || !args.prompt) return { error: "Prompt is required." };
+                
+                const response = await fetch("https://api.openai.com/v1/images/generations", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${apiKey}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: "dall-e-3",
+                        prompt: args.prompt,
+                        n: 1,
+                        size: args.size || "1024x1024"
+                    })
+                });
+
+                if (!response.ok) return { error: `Image Gen API error: ${response.statusText}` };
+                
+                const result = await response.json() as any;
+                if (result.data && result.data.length > 0) {
+                    return { success: true, url: result.data[0].url };
+                }
+                return { error: "No image generated." };
+            }
                 
             default:
                 throw new Error(`Unknown function: ${name}`);

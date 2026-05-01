@@ -78,6 +78,20 @@ export class LegionOrchestrator {
                 },
                 required: ["command"]
               }
+            },
+            {
+              name: "manipulate_browser",
+              description: "Perform an action on the headless browser.",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  action: { type: "STRING", description: "goto, click, type, extract, screenshot, close" },
+                  url: { type: "STRING" },
+                  selector: { type: "STRING" },
+                  value: { type: "STRING" }
+                },
+                required: ["action"]
+              }
             }
           ]
         }
@@ -166,14 +180,24 @@ export class LegionOrchestrator {
       // Start recording and streaming audio
       this.hal.startRecording(this.sampleRate, (data: Buffer) => {
         try {
-          this.session.sendRealtimeInput({
-            audio: {
-              mimeType: `audio/pcm;rate=${this.sampleRate}`,
-              data: data.toString('base64')
-            }
-          });
+          this.session.sendRealtimeInput([{
+            mimeType: `audio/pcm;rate=${this.sampleRate}`,
+            data: data.toString('base64')
+          }]);
         } catch (err) {
           console.error("\nError streaming audio to Gemini:", err);
+        }
+      });
+
+      // Start streaming video if available
+      this.hal.startVideo((base64Jpeg: string) => {
+        try {
+          this.session.sendRealtimeInput([{
+            mimeType: "image/jpeg",
+            data: base64Jpeg
+          }]);
+        } catch (err) {
+          console.error("\nError streaming video to Gemini:", err);
         }
       });
       
@@ -186,6 +210,7 @@ export class LegionOrchestrator {
     process.stdout.write('\r\x1b[K');
     console.log("Shutting down Legion Orchestrator...");
     this.hal.stopRecording();
+    this.hal.stopVideo();
     this.speaker.close();
     this.logger.log('System', 'Session ended gracefully.');
   }

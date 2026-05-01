@@ -1,6 +1,7 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
+import { manipulateBrowser } from './browser';
 
 const execAsync = promisify(exec);
 
@@ -43,6 +44,12 @@ export async function executeTool(name: string, args: any): Promise<any> {
                     return { stdout, stderr };
                 }
                 throw new Error("Command argument missing.");
+                
+            case 'manipulate_browser':
+                if (args && args.action) {
+                    return await manipulateBrowser(args.action, args.url, args.selector, args.value);
+                }
+                throw new Error("Browser action argument missing.");
                 
             default:
                 throw new Error(`Unknown function: ${name}`);

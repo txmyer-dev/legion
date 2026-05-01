@@ -1,35 +1,21 @@
 import dotenv from 'dotenv';
-import { NodeHardwareLayer, MockHardwareLayer, type HardwareAbstractionLayer } from './hardware';
-import { LegionOrchestrator } from './orchestrator';
+import { startGateway } from './gateway';
+import { startNode } from './node';
 
 dotenv.config();
 
-const API_KEY = process.env.GEMINI_API_KEY;
-if (!API_KEY) {
-  console.error("Please set GEMINI_API_KEY in your .env file.");
-  process.exit(1);
-}
+const mode = process.argv[2];
 
-// Audio configuration
-const SAMPLE_RATE = 16000;
-
-// Setup hardware layer
-let hal: HardwareAbstractionLayer;
-if (process.env.USE_MOCK_HARDWARE === 'true') {
-  console.log("Starting with Mock Hardware Layer (audio simulated).");
-  hal = new MockHardwareLayer();
+if (mode === 'gateway') {
+    const port = parseInt(process.argv[3] || '8080', 10);
+    startGateway(port);
+} else if (mode === 'node') {
+    const url = process.argv[3] || 'ws://localhost:8080';
+    startNode(url);
 } else {
-  hal = new NodeHardwareLayer();
+    console.log("Usage:");
+    console.log("  bun run index.ts gateway [port]");
+    console.log("  bun run index.ts node [ws://gateway-url:8080]");
+    console.log("\nNote: The gateway runs on your Linux VPS and handles Gemini Orchestration.");
+    console.log("The node runs on your Windows machine and handles native hardware (audio/video).");
 }
-
-console.log("Connecting to Gemini Live API...");
-
-// Launch Orchestrator
-const orchestrator = new LegionOrchestrator(API_KEY, hal, SAMPLE_RATE);
-
-// Handle graceful shutdown
-process.on('SIGINT', () => {
-  console.log("\nReceived SIGINT. Gracefully shutting down...");
-  orchestrator.close();
-  setTimeout(() => process.exit(0), 100);
-});

@@ -28,6 +28,7 @@ export class LegionOrchestrator {
     apiKey: string,
     hal: HardwareAbstractionLayer, 
     sampleRate: number = 16000,
+    autoStart: boolean = true,
     model: string = "gemini-3.1-flash-live-preview",
     personaName: string = "ekko-project"
   ) {
@@ -41,6 +42,13 @@ export class LegionOrchestrator {
     this.personaName = personaName;
     this.logger = new TranscriptLogger();
     
+    if (autoStart) {
+      this.start();
+    }
+  }
+
+  public start() {
+    if (this.session) return;
     this.setupLiveSession();
   }
 

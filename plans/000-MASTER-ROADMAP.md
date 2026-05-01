@@ -45,16 +45,16 @@
 
 ---
 
-## 🟡 Phase 5: The "Always-On" Gateway & Daemon (CURRENT)
+## 🟢 Phase 5: The "Always-On" Gateway & Daemon (COMPLETED)
 **Objective:** Transition from a monolith to a Gateway/Node architecture. Run the heavy Orchestrator on the Linux VPS, and a lightweight background Node natively on Windows 11.
-- [ ] **Task 5.1: Gateway/Node Split.** Decouple the local hardware scripts (`pyaudio`/OpenCV) from the Gemini WebSocket Orchestrator. The Windows Node will connect to the Linux Gateway over WebSockets.
-- [ ] **Task 5.2: Wake-Word Engine.** Integrate Picovoice Porcupine (or an equivalent local model) with a continuous ring buffer (OpenClaw style) to constantly listen for "We Are Legion" on the Windows Node.
-- [ ] **Task 5.3: Hardware Hotkey.** Implement a global Windows shortcut listener to trigger the agent manually without voice.
-- [ ] **Task 5.4: Background Service.** Configure the Windows Node to run invisibly as a Windows Service or system tray application, only streaming audio to the Gateway when triggered.
+- [x] **Task 5.1: Gateway/Node Split.** Decouple the local hardware scripts (`pyaudio`/OpenCV) from the Gemini WebSocket Orchestrator. The Windows Node will connect to the Linux Gateway over WebSockets.
+- [x] **Task 5.2: Wake-Word Engine.** Integrate Picovoice Porcupine (or an equivalent local model) with a continuous ring buffer (OpenClaw style) to constantly listen for "We Are Legion" on the Windows Node.
+- [x] **Task 5.3: Hardware Hotkey.** Implement a global Windows shortcut listener to trigger the agent manually without voice.
+- [x] **Task 5.4: Background Service.** Configure the Windows Node to run invisibly as a Windows Service or system tray application, only streaming audio to the Gateway when triggered.
 
 ---
 
-## 🚀 Phase 6: Ship & Review
+## 🟡 Phase 6: Ship & Review (CURRENT)
 **Objective:** Final audit and release of the "Legion" architecture.
 - [ ] **Task 6.1: Security Audit.** Review all exposed tools and sandbox boundaries.
 - [ ] **Task 6.2: E2E Playtesting.** Run a full day of productivity purely using Legion for tasks, browser management, and audio interactions.

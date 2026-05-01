@@ -1,0 +1,19 @@
+{
+  "name": "jasper-ai",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@google/genai": "^1.51.0",
+    "dotenv": "^17.4.2",
+    "node-record-lpcm16": "^1.0.1",
+    "speaker": "^0.5.5",
+    "ws": "^8.20.0"
+  }
+}

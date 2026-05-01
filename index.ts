@@ -1,6 +1,5 @@
-import WebSocket from 'ws';
 import dotenv from 'dotenv';
-import { NodeHardwareLayer } from './hardware';
+import { NodeHardwareLayer, MockHardwareLayer, HardwareAbstractionLayer } from './hardware';
 import { LegionOrchestrator } from './orchestrator';
 
 dotenv.config();
@@ -11,17 +10,19 @@ if (!API_KEY) {
   process.exit(1);
 }
 
-const HOST = "generativelanguage.googleapis.com";
-const WS_URL = `wss://${HOST}/ws/google.ai.generativelanguage.v1alpha.GenerativeService.BidiGenerateContent?key=${API_KEY}`;
-
 // Audio configuration
 const SAMPLE_RATE = 16000;
 
 // Setup hardware layer
-const hal = new NodeHardwareLayer();
+let hal: HardwareAbstractionLayer;
+if (process.env.USE_MOCK_HARDWARE === 'true') {
+  console.log("Starting with Mock Hardware Layer (audio simulated).");
+  hal = new MockHardwareLayer();
+} else {
+  hal = new NodeHardwareLayer();
+}
 
 console.log("Connecting to Gemini Live API...");
-const ws = new WebSocket(WS_URL);
 
 // Launch Orchestrator
-const orchestrator = new LegionOrchestrator(ws, hal, SAMPLE_RATE);
+const orchestrator = new LegionOrchestrator(API_KEY, hal, SAMPLE_RATE);

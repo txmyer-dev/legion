@@ -3,6 +3,7 @@ import record from 'node-record-lpcm16';
 import Speaker from 'speaker';
 import dotenv from 'dotenv';
 import { executeTool } from './tools';
+import { loadPersona } from './personaLoader';
 
 dotenv.config();
 
@@ -49,7 +50,7 @@ ws.on('open', () => {
       systemInstruction: {
         parts: [
           {
-            text: "You are Jasper, a highly sophisticated digital assistant inspired by Jarvis. You are witty, slightly sarcastic but deeply loyal and helpful. Keep your responses concise and conversational."
+            text: loadPersona("ekko-project")
           }
         ]
       },

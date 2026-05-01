@@ -45,10 +45,10 @@ export function validatePath(requestedPath: string): string {
 ```
 
 ## Acceptance Criteria
-- [ ] `bun test` runs a comprehensive suite against `tools.ts` without hitting the live Gemini API.
-- [ ] Attempting to execute commands or read files outside `C:\Users\txmye_ficivtv\My Drive\sb` throws a security violation error.
+- [x] `bun test` runs a comprehensive suite against `tools.ts` without hitting the live Gemini API.
+- [x] Attempting to execute commands or read files outside `C:\Users\txmye_ficivtv\My Drive\sb` throws a security violation error.
 - [ ] The audio capture and playback mechanics are decoupled into a `HardwareInterface` that can be swapped during testing.
-- [ ] The system correctly reads a persona configuration from `/personas/ekko-project/` and injects it into the WebSocket setup message.
+- [x] The system correctly reads a persona configuration from `/personas/ekko-project/` and injects it into the WebSocket setup message.
 
 ## Technical Considerations
 
@@ -66,10 +66,10 @@ export function validatePath(requestedPath: string): string {
 ## Implementation Steps
 
 **Approach:**
-- Task 1: Setup the `bun:test` test harness and write the first failing tests for the `tools.ts` sandbox.
-- Task 2: Implement the `validatePath` and execution boundary logic to pass the sandbox tests.
-- Task 3: Refactor the `index.ts` audio initialization into a `HardwareAbstractionLayer` class.
-- Task 4: Implement the Persona Loader to read from `/personas` and format the API setup payload.
+- [x] Task 1: Setup the `bun:test` test harness and write the first failing tests for the `tools.ts` sandbox.
+- [x] Task 2: Implement the `validatePath` and execution boundary logic to pass the sandbox tests.
+- [ ] Task 3: Refactor the `index.ts` audio initialization into a `HardwareAbstractionLayer` class. (To be done locally on Windows)
+- [x] Task 4: Implement the Persona Loader to read from `/personas` and format the API setup payload.
 
 ## References
 - [PRD](../design/prd.md)

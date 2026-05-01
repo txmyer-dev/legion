@@ -1,7 +1,19 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import path from 'path';
 
 const execAsync = promisify(exec);
+
+export const SECURE_ROOT = "C:\\Users\\txmye_ficivtv\\My Drive\\sb";
+
+export function validatePath(requestedPath: string): string {
+    // Force use of Windows path resolution logic even on Linux testing box
+    const normalized = path.win32.normalize(path.win32.resolve(SECURE_ROOT, requestedPath));
+    if (!normalized.startsWith(SECURE_ROOT)) {
+        throw new Error("Security Violation: Path traversal outside secure root.");
+    }
+    return normalized;
+}
 
 export async function executeTool(name: string, args: any): Promise<any> {
     try {
@@ -19,6 +31,13 @@ export async function executeTool(name: string, args: any): Promise<any> {
             
             case 'execute_local_command':
                 if (args && args.command) {
+                    const baseCommand = args.command.split(" ")[0].toLowerCase();
+                    const ALLOWED_COMMANDS = ['dir', 'ls', 'echo', 'cat', 'pwd'];
+                    
+                    if (!ALLOWED_COMMANDS.includes(baseCommand)) {
+                        throw new Error(`Security Violation: Command '${baseCommand}' is not allowed.`);
+                    }
+
                     console.log(`Executing bash command: ${args.command}`);
                     const { stdout, stderr } = await execAsync(args.command);
                     return { stdout, stderr };

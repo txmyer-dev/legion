@@ -26,16 +26,16 @@
 
 ---
 
-## 🟡 Phase 3: "Eyes and Hands" (Vision & Browser Orchestration) (CURRENT)
+## 🟢 Phase 3: "Eyes and Hands" (Vision & Browser Orchestration) (COMPLETED)
 **Objective:** Give Legion the ability to see its environment and manipulate the web.
-- [ ] **Task 3.1: Webcam Capture.** Build a Python bridge (`video_capture.py`) using OpenCV to capture a frame from the webcam at ~1 FPS and encode it as a base64 JPEG.
-- [ ] **Task 3.2: Vision Integration.** Interleave the webcam base64 frames into the `realtimeInput` payload alongside the audio chunks so Gemini can "see" what is happening.
-- [ ] **Task 3.3: Playwright Integration.** Install Playwright and create a `manipulate_browser` tool that allows Gemini to open web pages, click elements, and extract information on behalf of the user.
-- [ ] **Task 3.4: Visual Tool Tests.** Write local TDD tests validating browser orchestration and webcam mock frames.
+- [x] **Task 3.1: Webcam Capture.** Build a Python bridge (`video_capture.py`) using OpenCV to capture a frame from the webcam at ~1 FPS and encode it as a base64 JPEG.
+- [x] **Task 3.2: Vision Integration.** Interleave the webcam base64 frames into the `realtimeInput` payload alongside the audio chunks so Gemini can "see" what is happening.
+- [x] **Task 3.3: Playwright Integration.** Install Playwright and create a `manipulate_browser` tool that allows Gemini to open web pages, click elements, and extract information on behalf of the user.
+- [x] **Task 3.4: Visual Tool Tests.** Write local TDD tests validating browser orchestration and webcam mock frames.
 
 ---
 
-## ⚪ Phase 4: OS Integration & Advanced Tools
+## 🟡 Phase 4: OS Integration & Advanced Tools (CURRENT)
 **Objective:** Deepen the agent's connection to the user's SecondBrain and Windows system.
 - [ ] **Task 4.1: Task Backend Integration.** Connect `get_tasks` tool to your actual task management system (Notion, Obsidian, or local markdown).
 - [ ] **Task 4.2: Calendar Integration.** Build the `manage_calendar` tool using Google Calendar API.

@@ -13,7 +13,7 @@ describe("HardwareAbstractionLayer - Video", () => {
         expect(hal.videoCallback).not.toBeNull();
         
         hal.simulateVideoInput("base64_mock_frame_data");
-        expect(capturedFrame).toBe("base64_mock_frame_data");
+        expect(capturedFrame as string | null).toBe("base64_mock_frame_data");
         
         hal.stopVideo();
         expect(hal.videoCallback).toBeNull();

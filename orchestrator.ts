@@ -65,8 +65,44 @@ export class LegionOrchestrator {
         {
           functionDeclarations: [
             {
-              name: "get_todo_list",
-              description: "Fetch the user's open tasks from their to-do list."
+              name: "get_tasks",
+              description: "Fetch the user's open tasks from Todoist."
+            },
+            {
+              name: "add_task",
+              description: "Add a new task to Todoist.",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  content: { type: "STRING", description: "The task name/content" },
+                  description: { type: "STRING", description: "Optional description" },
+                  due_string: { type: "STRING", description: "Optional due date like 'tomorrow at 12pm'" }
+                },
+                required: ["content"]
+              }
+            },
+            {
+              name: "read_note",
+              description: "Read a markdown note from the user's Obsidian SecondBrain vault.",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  path: { type: "STRING", description: "Relative path to the note (e.g., 'Ideas/Project.md')" }
+                },
+                required: ["path"]
+              }
+            },
+            {
+              name: "append_note",
+              description: "Append content to an existing markdown note in the Obsidian vault.",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  path: { type: "STRING", description: "Relative path to the note (e.g., 'Ideas/Project.md')" },
+                  content: { type: "STRING", description: "The markdown content to append" }
+                },
+                required: ["path", "content"]
+              }
             },
             {
               name: "execute_local_command",

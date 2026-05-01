@@ -37,7 +37,7 @@
 
 ## 🟡 Phase 4: OS Integration & Advanced Tools (CURRENT)
 **Objective:** Deepen the agent's connection to the user's SecondBrain and Windows system.
-- [ ] **Task 4.1: Task Backend Integration.** Connect `get_tasks` tool to your actual task management system (Notion, Obsidian, or local markdown).
+- [x] **Task 4.1: Task Backend Integration.** Connect `get_tasks` and `add_task` tools to Todoist, and `read_note`/`append_note` to the local Obsidian vault.
 - [ ] **Task 4.2: Calendar Integration.** Build the `manage_calendar` tool using Google Calendar API.
 - [ ] **Task 4.3: Compound Engineering Tools.** Expose tools allowing the agent to trigger `/compound` and `/explore` workflows so it can document its own solutions.
 - [ ] **Task 4.4: Image Generation Tool.** Implement the `generate_cartoon_avatar` tool or equivalent image manipulation capabilities.

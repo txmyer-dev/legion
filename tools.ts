@@ -19,16 +19,81 @@ export function validatePath(requestedPath: string): string {
 export async function executeTool(name: string, args: any): Promise<any> {
     try {
         switch (name) {
-            case 'get_todo_list':
-                // For demonstration, we'll return a static list of tasks
-                return {
-                    tasks: [
-                        "develop environment monitoring routine",
-                        "update the marketplace",
-                        "investigate and fix document processing timeout",
-                        "schedule a follow-up meeting"
-                    ]
+            case 'get_tasks': {
+                const apiKey = process.env.TODOIST_API_KEY;
+                if (!apiKey) return { error: "TODOIST_API_KEY not found in environment." };
+                
+                const response = await fetch("https://api.todoist.com/rest/v2/tasks", {
+                    headers: { "Authorization": `Bearer ${apiKey}` }
+                });
+                
+                if (!response.ok) return { error: `Todoist API error: ${response.statusText}` };
+                
+                const tasks = await response.json() as any[];
+                return { 
+                    tasks: tasks.map((t: any) => ({
+                        id: t.id,
+                        content: t.content,
+                        description: t.description,
+                        is_completed: t.is_completed,
+                        due: t.due ? t.due.date : null
+                    }))
                 };
+            }
+                
+            case 'add_task': {
+                const apiKey = process.env.TODOIST_API_KEY;
+                if (!apiKey) return { error: "TODOIST_API_KEY not found in environment." };
+                if (!args || !args.content) return { error: "Task content required." };
+                
+                const response = await fetch("https://api.todoist.com/rest/v2/tasks", {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": `Bearer ${apiKey}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        content: args.content,
+                        description: args.description || "",
+                        due_string: args.due_string || undefined
+                    })
+                });
+                
+                if (!response.ok) return { error: `Todoist API error: ${response.statusText}` };
+                
+                const task = await response.json() as any;
+                return { success: true, task: { id: task.id, content: task.content } };
+            }
+            case 'read_note': {
+                const vaultPath = process.env.OBSIDIAN_VAULT_PATH || "C:\\Users\\txmye_ficivtv\\My Drive\\sb";
+                if (!args || !args.path) return { error: "Note path required." };
+                const notePath = path.win32.normalize(path.win32.resolve(vaultPath, args.path));
+                if (!notePath.startsWith(vaultPath)) return { error: "Security Violation: Path traversal outside vault." };
+                
+                try {
+                    const fs = require('fs/promises');
+                    const content = await fs.readFile(notePath, 'utf-8');
+                    return { content };
+                } catch (e: any) {
+                    return { error: `Failed to read note: ${e.message}` };
+                }
+            }
+
+            case 'append_note': {
+                const vaultPath = process.env.OBSIDIAN_VAULT_PATH || "C:\\Users\\txmye_ficivtv\\My Drive\\sb";
+                if (!args || !args.path || !args.content) return { error: "Note path and content required." };
+                const notePath = path.win32.normalize(path.win32.resolve(vaultPath, args.path));
+                if (!notePath.startsWith(vaultPath)) return { error: "Security Violation: Path traversal outside vault." };
+                
+                try {
+                    const fs = require('fs/promises');
+                    // Ensure the file ends with a newline before appending if we want, but appending raw is fine.
+                    await fs.appendFile(notePath, "\n" + args.content);
+                    return { success: true, message: `Appended to ${args.path}` };
+                } catch (e: any) {
+                    return { error: `Failed to append note: ${e.message}` };
+                }
+            }
             
             case 'execute_local_command':
                 if (args && args.command) {

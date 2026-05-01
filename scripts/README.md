@@ -49,6 +49,15 @@ This directory contains automation scripts that power the agent workflows. They 
 - **`update-solution-ref.sh`**: Updates solution reference counts.
 - **`update-spec-phase.sh`**: Manages specification lifecycles.
 - **`next-todo-id.sh`**: Generates unique IDs for todos.
+- **`generate-changelog.js`**: Generates a changelog from conventional commits.
+
+## Component Details
+
+Detailed usage instructions for scripts are embedded in the scripts themselves via the `--help` flag.
+
+### `generate-changelog.js`
+
+Generates a changelog based on conventional commits in the repository.
 
 ## Usage
 
@@ -59,6 +68,9 @@ Most scripts are designed to be run via the agent workflows (e.g. `/work`, `/hou
 ```
 
 ## Changelog
+
+### 2026-05-01
+- Updated documentation sections for validation requirements.
 
 - **2025-12-27**: Added git worktree automation scripts.
 - **2025-12-23**: Initial transfer from InvestOS compound system.

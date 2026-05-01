@@ -1,35 +1,78 @@
-# Jasper AI Replica (Google Gemini Live API)
+# 🔱 Legion
 
-This project is a minimal implementation replicating the core voice and tool-calling capabilities of Gareth's Jasper AI. It streams audio continuously from your local microphone to Google's Gemini Multimodal Live API (`gemini-2.0-flash-exp`) and plays the AI's audio responses back through your speakers.
+**Legion** is a high-performance, multimodal AI agent framework powered by the **Gemini 2.0 Flash Multimodal Live API**. It is designed for low-latency voice interaction, featuring a secure command execution sandbox and a modular persona system optimized for Windows 11 host environments.
 
-## Prerequisites
-- **Bun** (for running the TypeScript file)
-- **SoX** (`node-record-lpcm16` requires `sox` or `rec` installed on your system to capture microphone audio). 
-  - On Ubuntu/Debian: `sudo apt-get install sox libsox-fmt-all`
-  - On macOS: `brew install sox`
-- **ALSA headers** (Linux only, for the `speaker` package).
-  - On Ubuntu/Debian: `sudo apt-get install libasound2-dev`
+Legion is built on the principle of **Compounding Engineering**: *Each unit of engineering work should make subsequent units of work easier—not harder.*
 
-## Setup
-1. Copy `.env.example` to `.env` and insert your Gemini API Key:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your key
-   ```
+---
 
-2. Install dependencies (if not already installed):
-   ```bash
+## 🚀 Quick Start
+
+### Prerequisites
+- **[Bun](https://bun.sh/)**: The primary runtime for Legion.
+- **[SoX](https://sourceforge.net/projects/sox/)**: Required for microphone capture on Windows.
+    - Ensure `sox` is in your system `PATH`.
+- **Gemini API Key**: Obtain from [Google AI Studio](https://aistudio.google.com/).
+
+### Installation
+1. Clone the repository and install dependencies:
+   ```powershell
    bun install
    ```
 
-3. Run the application:
-   ```bash
-   bun run index.ts
+2. Configure environment:
+   ```powershell
+   copy .env.example .env
+   # Add your GEMINI_API_KEY to .env
    ```
 
-## Architecture
-- `index.ts`: The main orchestration script. It sets up the WebSocket connection to Gemini, negotiates the `setup` message, and handles the continuous audio I/O streaming using `node-record-lpcm16` and `speaker`.
-- `tools.ts`: Defines the local function-calling execution environment. You can expand this to execute custom scripts, modify local files, and hook into Notion/Todoist.
+3. Run the agent:
+   ```powershell
+   bun index.ts
+   ```
 
-## Customization
-If you want to integrate the webcam, you can extend `index.ts` to capture frames via OpenCV or `node-webcam` and push them as `IMAGE` inline data parts to the WebSocket alongside the audio stream.
+---
+
+## 🏗️ Architecture & Features
+
+### 🎙️ Hardware Abstraction Layer (HAL)
+The HAL (`hardware.ts`) isolates OS-specific audio capture and playback. This ensures that the core orchestration logic remains platform-agnostic, enabling seamless operation on Windows 11 while supporting future mocking for TDD.
+
+### 🛡️ Secure Windows Sandbox
+Legion includes a robust security boundary (`tools.ts`) for local command execution:
+- **Path Validation**: All file operations are constrained to a `SECURE_ROOT` (`C:\Users\txmye_ficivtv\My Drive\sb`) using `path.win32` resolution logic to prevent directory traversal.
+- **Command Whitelist**: Only safe commands (e.g., `dir`, `echo`, `cat`) are permitted.
+
+### 🎭 Modular Persona System
+Agent identities are not hardcoded. The `personaLoader.ts` dynamically assembles system instructions from modular markdown files in `personas/`, allowing for complex, identity-driven behavior (e.g., the **Ekko** persona).
+
+### ⚡ Bun Integration
+Legion leverages Bun's built-in APIs for high performance and reduced dependency overhead, including native `.env` loading and optimized WebSocket handling.
+
+---
+
+## 🧠 Core Philosophy: Compounding Engineering
+
+Legion isn't just a voice assistant; it's a self-improving knowledge system. The repository is structured to capture every decision, solution, and exploration to accelerate future development.
+
+- **`/explore`**: Deep investigation of problems before implementation.
+- **`/plan`**: Structured implementation plans for multi-session initiatives.
+- **`/compound`**: Documenting successful patterns and solutions in `docs/solutions/`.
+- **`/housekeeping`**: Maintaining repository health, auditing state drift, and archiving completed tasks.
+
+See [GEMINI.md](./GEMINI.md) for the full protocol.
+
+---
+
+## 🔧 Customization
+
+### Adding a Persona
+Create a new directory in `personas/` with a `CLAUDE.md` and optional sub-directories for `identity`, `rules`, and `telos`. The `personaLoader` will automatically compile these into a unified system instruction.
+
+### Extending Tools
+Add new capabilities to the `executeTool` function in `tools.ts` and register their `functionDeclarations` in the `setup` message within `index.ts`.
+
+---
+
+## 📄 License
+*Inspired by the Antigravity Compound Engineering Plugin.*

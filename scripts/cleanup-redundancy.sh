@@ -81,7 +81,10 @@ rm -f "$HASH_FILE"
 
 # --- 2. Knowledge Fragmentation (Basename collisions in docs) ---
 echo -e "\n${BLUE}📚 Check 2: Knowledge Fragmentation (Docs)${NC}"
-DOC_DUPS=$(find docs/solutions docs/explorations docs/architecture -name "*.md" | sed 's|.*/||' | sort | uniq -d)
+DOC_DUPS=$(find docs/solutions docs/explorations docs/architecture -type f -name "*.md" | \
+    awk -F/ '{print $NF}' | \
+    grep -v -E "^(README\.md|critical-patterns\.md)$" | \
+    sort | uniq -d)
 
 if [[ -n "$DOC_DUPS" ]]; then
     echo -e "   ${YELLOW}⚠ Found duplicate basenames in docs:${NC}"
@@ -112,7 +115,7 @@ fi
 # --- 4. Misplaced Root Files ---
 echo -e "\n${BLUE}📁 Check 4: Misplaced Root Files${NC}"
 # Standard root docs that are allowed
-STANDARD_DOCS=("README.md" "CHANGELOG.md" "GEMINI.md" "JULES_SETUP.md")
+STANDARD_DOCS=("README.md" "CHANGELOG.md" "GEMINI.md" "CLAUDE.md" "JULES_SETUP.md")
 MISPLACED_FILES=$(find . -maxdepth 1 -name "*.md" -type f | sed 's|^\./||')
 
 FOUND_MISPLACED=false

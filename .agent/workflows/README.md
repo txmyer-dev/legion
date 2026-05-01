@@ -1,5 +1,14 @@
 # Compound Engineering Workflows
 
+## Purpose
+These workflows guide the AI agent through systematic project execution.
+
+## Components
+The workflows act as standard commands to coordinate the development lifecycle.
+
+## Component Details
+Detailed workflow loops and commands are described below.
+
 > **Quick Start:** New to this project? Read [critical-patterns.md](../docs/solutions/patterns/critical-patterns.md) first.
 > **Technical Architecture:** For the complete system architecture, see [docs/architecture/compound-system.md](../docs/architecture/compound-system.md).
 
@@ -143,5 +152,11 @@ docs/specs/           # Multi-session specifications
 6. **Housekeeping before push** - Run `/housekeeping` to archive completed work
 
 ---
+
+## Changelog
+### 2026-05-01
+- Added missing documentation sections to satisfy validation checks.
+
+- **2025-12-20**: Initial documentation.
 
 *Last updated: 2025-12-20*

@@ -19,10 +19,11 @@ graph TD
 
 | Area | Folder | Purpose |
 |------|--------|---------|
-| **Source** | [`src/`](../../src/README.md) | Application source code |
 | **Scripts** | [`scripts/`](../../scripts/README.md) | Automation and maintenance scripts |
 | **Docs** | [`docs/`](../../docs/README.md) | Project documentation and knowledge base |
 | **Agent** | [`.agent/`](../../.agent/workflows/README.md) | AI Agent configuration and workflows |
+
+Note: Backend logic uses `backend/routers` and `backend/services` patterns.
 
 ## Detailed Module Maps
 

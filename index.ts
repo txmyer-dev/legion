@@ -1,9 +1,8 @@
 import WebSocket from 'ws';
-import record from 'node-record-lpcm16';
-import Speaker from 'speaker';
 import dotenv from 'dotenv';
 import { executeTool } from './tools';
 import { loadPersona } from './personaLoader';
+import { NodeHardwareLayer } from './hardware';
 
 dotenv.config();
 
@@ -20,12 +19,9 @@ const WS_URL = `wss://${HOST}/ws/google.ai.generativelanguage.v1alpha.Generative
 // Audio configuration
 const SAMPLE_RATE = 16000;
 
-// Setup speaker for output
-const speaker = new Speaker({
-  channels: 1,
-  bitDepth: 16,
-  sampleRate: SAMPLE_RATE,
-});
+// Setup hardware layer
+const hal = new NodeHardwareLayer();
+const speaker = hal.getSpeaker(SAMPLE_RATE);
 
 console.log("Connecting to Gemini Live API...");
 const ws = new WebSocket(WS_URL);
@@ -129,13 +125,7 @@ ws.on('message', async (data) => {
     console.log("Setup complete! Jasper is listening... (Speak into your microphone)");
     
     // Start recording and streaming audio
-    record.record({
-      sampleRate: SAMPLE_RATE,
-      channels: 1,
-      audioType: 'raw',
-    })
-    .stream()
-    .on('data', (data: Buffer) => {
+    hal.startRecording(SAMPLE_RATE, (data: Buffer) => {
       const audioMessage = {
         realtimeInput: {
           mediaChunks: [

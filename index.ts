@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { NodeHardwareLayer, MockHardwareLayer, HardwareAbstractionLayer } from './hardware';
+import { NodeHardwareLayer, MockHardwareLayer, type HardwareAbstractionLayer } from './hardware';
 import { LegionOrchestrator } from './orchestrator';
 
 dotenv.config();
@@ -26,3 +26,10 @@ console.log("Connecting to Gemini Live API...");
 
 // Launch Orchestrator
 const orchestrator = new LegionOrchestrator(API_KEY, hal, SAMPLE_RATE);
+
+// Handle graceful shutdown
+process.on('SIGINT', () => {
+  console.log("\nReceived SIGINT. Gracefully shutting down...");
+  orchestrator.close();
+  setTimeout(() => process.exit(0), 100);
+});

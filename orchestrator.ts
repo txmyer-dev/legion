@@ -1,16 +1,28 @@
 import { GoogleGenAI } from '@google/genai';
 import { executeTool } from './tools';
 import { loadPersona } from './personaLoader';
-import { HardwareAbstractionLayer } from './hardware';
+import type { HardwareAbstractionLayer, Speaker } from './hardware';
+import { TranscriptLogger } from './logger';
 
 export class LegionOrchestrator {
   private ai: GoogleGenAI;
   private session: any; // Session object from @google/genai
   private hal: HardwareAbstractionLayer;
-  private speaker: { write: (buffer: Buffer) => void };
+  private speaker: Speaker;
   private sampleRate: number;
   private model: string;
   private personaName: string;
+  private logger: TranscriptLogger;
+  private agentState: 'Listening' | 'Speaking' = 'Listening';
+
+  private updateStatus() {
+    process.stdout.write('\r\x1b[K'); // clear line
+    if (this.agentState === 'Listening') {
+      process.stdout.write('🟢 Listening...');
+    } else if (this.agentState === 'Speaking') {
+      process.stdout.write('🟣 Speaking...');
+    }
+  }
 
   constructor(
     apiKey: string,
@@ -27,13 +39,14 @@ export class LegionOrchestrator {
     this.speaker = hal.getSpeaker(sampleRate);
     this.model = model;
     this.personaName = personaName;
+    this.logger = new TranscriptLogger();
     
     this.setupLiveSession();
   }
 
   private async setupLiveSession() {
-    const config = {
-      responseModalities: ["AUDIO"],
+    const config: any = {
+      responseModalities: ["AUDIO", "TEXT"],
       speechConfig: {
         voiceConfig: {
           prebuiltVoiceConfig: {
@@ -77,27 +90,44 @@ export class LegionOrchestrator {
         config: config,
         callbacks: {
           onmessage: async (response: any) => {
-            // Log response briefly (don't log the whole base64 audio)
-            if (response.serverContent?.modelTurn) {
-              console.log("Received audio/function call from Gemini.");
-            } else if (response.serverContent?.turnComplete) {
-              console.log("Gemini finished speaking.");
-            } else {
-              console.log("Received message:", JSON.stringify(response, null, 2).substring(0, 200));
-            }
-
             // Handle incoming audio
             const content = response.serverContent;
+            
+            if (content?.interrupted) {
+              this.logger.log('System', 'User interrupted Gemini.');
+              this.speaker.interrupt();
+              this.agentState = 'Listening';
+              this.updateStatus();
+              return;
+            }
+
+            if (content?.turnComplete) {
+              this.agentState = 'Listening';
+              this.updateStatus();
+            }
+
             if (content?.modelTurn) {
+              if (this.agentState !== 'Speaking') {
+                this.agentState = 'Speaking';
+                this.updateStatus();
+              }
               const parts = content.modelTurn.parts;
               for (const part of parts) {
                 if (part.inlineData && part.inlineData.data) {
                   const audioBuffer = Buffer.from(part.inlineData.data, 'base64');
                   this.speaker.write(audioBuffer);
                 }
+                
+                if (part.text) {
+                  this.logger.log('Legion', part.text);
+                }
+
                 // Handle function calls
                 if (part.functionCall) {
-                  console.log("Jasper called function:", part.functionCall.name);
+                  const callLog = `Called function: ${part.functionCall.name} with args: ${JSON.stringify(part.functionCall.args)}`;
+                  console.log(callLog);
+                  this.logger.log('System', callLog);
+                  
                   const result = await executeTool(part.functionCall.name, part.functionCall.args);
                   
                   this.session.sendToolResponse({
@@ -121,7 +151,8 @@ export class LegionOrchestrator {
         }
       });
       
-      console.log("Setup complete! Jasper is listening... (Speak into your microphone)");
+      console.log("Setup complete! Legion is listening... (Speak into your microphone)");
+      this.logger.log('System', 'Session started.');
 
       // Prompt Gemini to introduce itself to verify audio output works
       this.session.sendClientContent({
@@ -130,11 +161,11 @@ export class LegionOrchestrator {
         ],
         turnComplete: true
       });
+      this.logger.log('User', "Hello! Please introduce yourself shortly.");
 
       // Start recording and streaming audio
       this.hal.startRecording(this.sampleRate, (data: Buffer) => {
         try {
-          process.stdout.write("."); // Log a dot for every audio chunk sent to show activity
           this.session.sendRealtimeInput({
             audio: {
               mimeType: `audio/pcm;rate=${this.sampleRate}`,
@@ -142,12 +173,20 @@ export class LegionOrchestrator {
             }
           });
         } catch (err) {
-          console.error("Error streaming audio to Gemini:", err);
+          console.error("\nError streaming audio to Gemini:", err);
         }
       });
       
     } catch (e) {
       console.error("Failed to setup live session:", e);
     }
+  }
+
+  public close() {
+    process.stdout.write('\r\x1b[K');
+    console.log("Shutting down Legion Orchestrator...");
+    this.hal.stopRecording();
+    this.speaker.close();
+    this.logger.log('System', 'Session ended gracefully.');
   }
 }

@@ -11,22 +11,22 @@
 - [x] Implement path traversal sandbox in `tools.ts` (`C:\Users\txmye_ficivtv\My Drive\sb`).
 - [x] Implement shell command whitelist (`dir`, `ls`, etc.).
 - [x] Implement dynamic Persona Loader pulling from `~/sb/5ekko`.
-- [ ] **Task 1.6 (Refactor):** Refactor Persona Loader to enforce explicit `SOUL.md`, `TOOLS.md`, and `AGENTS.md` context separation.
+- [x] **Task 1.6 (Refactor):** Refactor Persona Loader to enforce explicit `SOUL.md`, `TOOLS.md`, and `AGENTS.md` context separation.
 - [x] Establish bidirectional WebSocket connection to Gemini Multimodal Live API.
 - [x] Abstract audio I/O using Python `pyaudio` bridges for Windows native support.
 
 ---
 
-## 🟡 Phase 2: Conversational UX & State Management (CURRENT)
+## 🟢 Phase 2: Conversational UX & State Management (COMPLETED)
 **Objective:** Make the voice interactions feel natural, interruptible, and memorable.
-- [ ] **Task 2.1: Barge-in / Interruptibility.** Handle `serverContent.interrupted` from Gemini by explicitly sending a flush/kill signal to the `audio_playback.py` process to stop the current audio stream instantly when the user interrupts.
-- [ ] **Task 2.2: Session Transcripts.** Capture the text chunks coming from Gemini's audio responses and save them to a markdown file in `docs/logs/{date}-session.md` to provide long-term conversational memory.
-- [ ] **Task 2.3: Graceful Exit.** Catch `Ctrl+C` (SIGINT) to properly close the WebSocket, kill the Python audio bridges, and exit cleanly without leaving orphaned background processes.
-- [ ] **Task 2.4: Terminal UI (TUI).** Implement a clean visual indicator (using `ink` or ANSI escape codes) in the terminal showing the agent's state: 🟢 *Listening*, 🔵 *Thinking*, 🟣 *Speaking*.
+- [x] **Task 2.1: Barge-in / Interruptibility.** Handle `serverContent.interrupted` from Gemini by explicitly sending a flush/kill signal to the `audio_playback.py` process to stop the current audio stream instantly when the user interrupts.
+- [x] **Task 2.2: Session Transcripts.** Capture the text chunks coming from Gemini's audio responses and save them to a markdown file in `docs/logs/{date}-session.md` to provide long-term conversational memory.
+- [x] **Task 2.3: Graceful Exit.** Catch `Ctrl+C` (SIGINT) to properly close the WebSocket, kill the Python audio bridges, and exit cleanly without leaving orphaned background processes.
+- [x] **Task 2.4: Terminal UI (TUI).** Implement a clean visual indicator (using `ink` or ANSI escape codes) in the terminal showing the agent's state: 🟢 *Listening*, 🔵 *Thinking*, 🟣 *Speaking*.
 
 ---
 
-## ⚪ Phase 3: "Eyes and Hands" (Vision & Browser Orchestration)
+## 🟡 Phase 3: "Eyes and Hands" (Vision & Browser Orchestration) (CURRENT)
 **Objective:** Give Legion the ability to see its environment and manipulate the web.
 - [ ] **Task 3.1: Webcam Capture.** Build a Python bridge (`video_capture.py`) using OpenCV to capture a frame from the webcam at ~1 FPS and encode it as a base64 JPEG.
 - [ ] **Task 3.2: Vision Integration.** Interleave the webcam base64 frames into the `realtimeInput` payload alongside the audio chunks so Gemini can "see" what is happening.

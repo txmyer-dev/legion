@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "skills": {
+    "snap": {
+      "name": "SNAP",
+      "description": "Core PAI algorithm and system architecture — how Ekko reasons, prioritizes, and operates",
+      "file": "snap.md",
+      "tier": "always",
+      "triggers": ["algorithm", "snap", "system architecture", "how you work"]
+    },
+    "research": {
+      "name": "Research",
+      "description": "Multi-source web research methodology using parallel AI agents",
+      "file": "research.md",
+      "tier": "deferred",
+      "triggers": ["research", "find information", "look up", "investigate", "web search"]
+    },
+    "finance": {
+      "name": "Finance",
+      "description": "Personal finance management via hledger — balances, transactions, net worth",
+      "file": "finance.md",
+      "tier": "deferred",
+      "triggers": ["finance", "balance", "networth", "net worth", "expenses", "income", "hledger", "money"]
+    },
+    "osint": {
+      "name": "OSINT",
+      "description": "Open source intelligence gathering and due diligence techniques",
+      "file": "osint.md",
+      "tier": "deferred",
+      "triggers": ["osint", "due diligence", "investigate person", "background check", "recon", "find person"]
+    },
+    "fabric": {
+      "name": "Fabric",
+      "description": "240+ prompt patterns for extracting wisdom, summarizing, and processing content",
+      "file": "fabric.md",
+      "tier": "deferred",
+      "triggers": ["fabric", "pattern", "extract wisdom", "summarize deeply", "analyze content"]
+    },
+    "redteam": {
+      "name": "RedTeam",
+      "description": "Adversarial analysis with multiple opposing agents to stress-test ideas",
+      "file": "redteam.md",
+      "tier": "deferred",
+      "triggers": ["red team", "adversarial", "stress test", "attack idea", "challenge this", "find flaws"]
+    },
+    "council": {
+      "name": "Council",
+      "description": "Multi-agent debate system for getting multiple perspectives on a decision",
+      "file": "council.md",
+      "tier": "deferred",
+      "triggers": ["council", "debate", "perspectives", "multiple views", "what would"]
+    }
+  }
+}

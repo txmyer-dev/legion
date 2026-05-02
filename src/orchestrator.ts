@@ -1,6 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import { pluginManager } from './plugins/index';
 import { loadPersona } from './personaLoader';
+import { skillLoader } from './skillLoader';
 import type { HardwareAbstractionLayer, Speaker } from './hardware';
 import { TranscriptLogger } from './logger';
 
@@ -69,7 +70,7 @@ export class LegionOrchestrator {
       systemInstruction: {
         parts: [
           {
-            text: loadPersona(this.personaName)
+            text: loadPersona(this.personaName) + skillLoader.loadAlwaysSkills()
           }
         ]
       },

@@ -19,7 +19,8 @@ export const getTasksPlugin: LegionPlugin = {
         
         if (!response.ok) return { error: `Todoist API error: ${response.statusText}` };
         
-        const tasks = await response.json() as any[];
+        const data = await response.json() as any;
+        const tasks = data.results || [];
         return { 
             tasks: tasks.map((t: any) => ({
                 id: t.id,

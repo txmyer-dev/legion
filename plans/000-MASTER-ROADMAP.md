@@ -58,4 +58,11 @@
 **Objective:** Final audit and release of the "Legion" architecture.
 - [ ] **Task 6.1: Security Audit.** Review all exposed tools and sandbox boundaries.
 - [ ] **Task 6.2: E2E Playtesting.** Run a full day of productivity purely using Legion for tasks, browser management, and audio interactions.
+
+---
+
+## 🔮 Phase 7: GUI & Quality of Life (FUTURE)
+**Objective:** Build a user-friendly interface for managing the Node without touching code or scripts.
+- [ ] **Task 7.1: System Tray GUI.** Wrap the Node in a lightweight Electron app (or similar) that lives in the Windows System Tray.
+- [ ] **Task 7.2: Dynamic Gateway Routing.** Implement a settings UI with a server dropdown, allowing the user to dynamically point the Node to different Gateway IP addresses (e.g., swapping from a Google Cloud VPS to an AWS server) on the fly without restarting the daemon.
 - [ ] **Task 6.3: Compound Documentation.** Finalize all `/compound` docs describing the architecture.

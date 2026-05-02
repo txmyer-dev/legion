@@ -1,6 +1,6 @@
 {
   "name": "jasper-ai",
-  "module": "index.ts",
+  "module": "src/index.ts",
   "type": "module",
   "private": true,
   "devDependencies": {
@@ -16,7 +16,6 @@
     "@types/ws": "^8.18.1",
     "dotenv": "^17.4.2",
     "googleapis": "^171.4.0",
-    "node-global-key-listener": "^0.3.0",
     "playwright": "^1.59.1",
     "ws": "^8.20.0"
   }

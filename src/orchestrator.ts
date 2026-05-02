@@ -74,6 +74,7 @@ export class LegionOrchestrator {
         ]
       },
       tools: [
+        { googleSearch: {} },
         {
           functionDeclarations: [
             {

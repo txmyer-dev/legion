@@ -84,7 +84,8 @@ export class NodeHardwareLayer implements HardwareAbstractionLayer {
 
   startVideo(onFrame: (base64Jpeg: string) => void): void {
     const { spawn } = require('child_process');
-    this.pyVid = spawn('python', [path.join(__dirname, '../python/video_capture.py')]);
+    const cameraIndex = process.env.CAMERA_INDEX || '0';
+    this.pyVid = spawn('python', [path.join(__dirname, '../python/video_capture.py'), cameraIndex]);
     
     this.pyVid.stdout.on('data', (data: Buffer) => {
       this.vidBuffer += data.toString('utf-8');

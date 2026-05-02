@@ -4,8 +4,15 @@ import time
 import base64
 
 def main():
-    # Capture from the default webcam
-    cap = cv2.VideoCapture(0)
+    # Capture from the specified webcam or default to 0
+    cam_index = 0
+    if len(sys.argv) > 1:
+        try:
+            cam_index = int(sys.argv[1])
+        except ValueError:
+            pass
+    
+    cap = cv2.VideoCapture(cam_index)
 
     if not cap.isOpened():
         print("Error: Could not open webcam.", file=sys.stderr)

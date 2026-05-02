@@ -1,8 +1,13 @@
 import dotenv from 'dotenv';
+import path from 'path';
+import os from 'os';
 import { startGateway } from './gateway';
 import { startNode } from './node';
 
+// Load local .env
 dotenv.config();
+// Fallback to ~/.env
+dotenv.config({ path: path.join(os.homedir(), '.env') });
 
 const mode = process.argv[2];
 

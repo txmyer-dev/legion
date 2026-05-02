@@ -106,7 +106,7 @@ export async function executeTool(name: string, args: any): Promise<any> {
                         
                         // We use an alpine container that destroys itself after running the command
                         // This prevents any destructive path traversal or local environment corruption.
-                        const dockerCmd = `docker run --rm -v "${vaultPath}:/sandbox:ro" alpine sh -c "${args.command.replace(/"/g, '\\"')}"`;
+                        const dockerCmd = `docker run --rm -v "${vaultPath}:/sandbox:ro" -w /sandbox alpine sh -c "apk add --no-cache curl >/dev/null 2>&1 || true; ${args.command.replace(/"/g, '\\"')}"`;
                         
                         const { stdout, stderr } = await execAsync(dockerCmd);
                         return { stdout, stderr };
@@ -115,6 +115,17 @@ export async function executeTool(name: string, args: any): Promise<any> {
                     }
                 }
                 throw new Error("Command argument missing.");
+
+            case 'get_weather': {
+                const location = args && args.location ? args.location : "";
+                try {
+                    const { stdout } = await execAsync(`curl -s "wttr.in/${location}?format=3"`);
+                    return { weather: stdout.trim() };
+                } catch (e: any) {
+                    return { error: `Failed to fetch weather: ${e.message}` };
+                }
+            }
+                
                 
             case 'trigger_compound_workflow':
                 if (args && args.workflow) {

@@ -74,7 +74,6 @@ export class LegionOrchestrator {
         ]
       },
       tools: [
-        { googleSearch: {} },
         {
           functionDeclarations: [
             {
@@ -144,6 +143,16 @@ export class LegionOrchestrator {
                   value: { type: "STRING" }
                 },
                 required: ["action"]
+              }
+            },
+            {
+              name: "get_weather",
+              description: "Get the current weather for a specific location.",
+              parameters: {
+                type: "OBJECT",
+                properties: {
+                  location: { type: "STRING", description: "The city or location to get the weather for." }
+                }
               }
             },
             {

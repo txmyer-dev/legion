@@ -13,13 +13,14 @@ export const getTasksPlugin: LegionPlugin = {
         const apiKey = process.env.TODOIST_API_TOKEN;
         if (!apiKey) return { error: "TODOIST_API_TOKEN not found in environment." };
         
-        const response = await fetch("https://api.todoist.com/rest/v2/tasks", {
+        const response = await fetch("https://api.todoist.com/api/v1/tasks", {
             headers: { "Authorization": `Bearer ${apiKey}` }
         });
         
         if (!response.ok) return { error: `Todoist API error: ${response.statusText}` };
         
-        const tasks = await response.json() as any[];
+        const data = await response.json() as any;
+        const tasks = data.results || [];
         return { 
             tasks: tasks.map((t: any) => ({
                 id: t.id,
@@ -51,7 +52,7 @@ export const addTaskPlugin: LegionPlugin = {
         if (!apiKey) return { error: "TODOIST_API_TOKEN not found in environment." };
         if (!args || !args.content) return { error: "Task content required." };
         
-        const response = await fetch("https://api.todoist.com/rest/v2/tasks", {
+        const response = await fetch("https://api.todoist.com/api/v1/tasks", {
             method: "POST",
             headers: { 
                 "Authorization": `Bearer ${apiKey}`,

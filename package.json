@@ -16,6 +16,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@google-cloud/secret-manager": "^6.1.2",
     "@google/genai": "^1.51.0",
     "@picovoice/porcupine-node": "^4.0.2",
     "@picovoice/pvrecorder-node": "^1.2.8",

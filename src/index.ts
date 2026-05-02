@@ -1,11 +1,11 @@
-import dotenv from 'dotenv';
 import path from 'path';
 import os from 'os';
 import { startGateway } from './gateway';
 import { startNode } from './node';
+import { loadGoogleSecrets } from './secretLoader';
 
-// Single source of truth for all secrets
-dotenv.config({ path: path.join(process.cwd(), 'personas/ekko-project/.env') });
+// Block the boot sequence until secrets are injected into memory
+await loadGoogleSecrets('personal-api-488606', 'LEGION_EKKO_SECRETS');
 
 const mode = process.argv[2];
 

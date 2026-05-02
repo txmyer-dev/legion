@@ -3,8 +3,10 @@ import { NodeHardwareLayer } from './hardware';
 import { WakeWordEngine } from './wake_word';
 import { spawn, ChildProcess } from 'child_process';
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config();
+dotenv.config({ path: path.join(process.cwd(), 'personas/ekko-project/.env') });
+
 
 export function startNode(gatewayUrl: string = 'ws://localhost:9090'): () => void {
   const ws = new WebSocket(gatewayUrl);

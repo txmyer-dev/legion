@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export function startNode(gatewayUrl: string = 'ws://localhost:9090') {
+export function startNode(gatewayUrl: string = 'ws://localhost:9090'): () => void {
   const ws = new WebSocket(gatewayUrl);
   const hal = new NodeHardwareLayer();
   const speaker = hal.getSpeaker(24000);
@@ -93,7 +93,7 @@ export function startNode(gatewayUrl: string = 'ws://localhost:9090') {
     hal.stopRecording();
     hal.stopVideo();
     speaker.close();
-    process.exit(0);
+    if (require.main === module) process.exit(0);
   });
 
   ws.on('error', (err) => {
@@ -109,8 +109,12 @@ export function startNode(gatewayUrl: string = 'ws://localhost:9090') {
     hal.stopVideo();
     speaker.close();
     ws.close();
-    process.exit(0);
+    if (require.main === module) process.exit(0);
   });
+
+  return () => {
+    ws.close();
+  };
 }
 
 if (require.main === module) {

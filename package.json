@@ -4,7 +4,13 @@
   "type": "module",
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "electron": "^41.4.0"
+  },
+  "scripts": {
+    "start:gateway": "bun run src/index.ts gateway",
+    "start:node": "bun run src/index.ts node",
+    "start:gui": "bunx electron ./src/gui.ts"
   },
   "peerDependencies": {
     "typescript": "^5"

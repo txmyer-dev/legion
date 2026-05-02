@@ -11,7 +11,7 @@ export const SECURE_ROOT = "/home/txmyer/sb";
 export function validatePath(requestedPath: string): string {
     // Force use of POSIX path resolution logic for the Linux VPS
     const normalized = path.normalize(path.resolve(SECURE_ROOT, requestedPath));
-    if (!normalized.startsWith(SECURE_ROOT)) {
+    if (!normalized.startsWith(SECURE_ROOT + path.sep) && normalized !== SECURE_ROOT) {
         throw new Error("Security Violation: Path traversal outside secure root.");
     }
     return normalized;

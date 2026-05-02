@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legion Node Settings</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: #ffffff;
+      padding: 20px;
+      margin: 0;
+    }
+    h2 {
+      margin-top: 0;
+      color: #61dafb;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background-color: #2d2d2d;
+      color: #fff;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #61dafb;
+    }
+    button {
+      background-color: #61dafb;
+      color: #1e1e1e;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #4fa8c7;
+    }
+    #status {
+      margin-top: 15px;
+      font-size: 0.9em;
+      color: #888;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>Gateway Configuration</h2>
+  <div class="form-group">
+    <label for="gatewayIp">Gateway WebSocket URL:</label>
+    <input type="text" id="gatewayIp" placeholder="e.g., ws://localhost:9090" value="ws://localhost:9090">
+  </div>
+  <button id="saveBtn">Save & Restart Node</button>
+  <div id="status"></div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    // Request current settings on load
+    ipcRenderer.invoke('get-settings').then((settings) => {
+      if (settings && settings.gatewayUrl) {
+        document.getElementById('gatewayIp').value = settings.gatewayUrl;
+      }
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const url = document.getElementById('gatewayIp').value;
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = 'Saving and restarting...';
+      statusEl.style.color = '#888';
+      
+      ipcRenderer.invoke('save-settings', { gatewayUrl: url }).then((res) => {
+        if (res.success) {
+          statusEl.textContent = 'Success! Node restarted.';
+          statusEl.style.color = '#4caf50';
+          setTimeout(() => {
+            window.close();
+          }, 1500);
+        } else {
+          statusEl.textContent = 'Failed to restart node.';
+          statusEl.style.color = '#f44336';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

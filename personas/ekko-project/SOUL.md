@@ -34,31 +34,6 @@
 - Use for client demos during Build Sessions
 
 ---
-
-## On Hold
-
-### CrowbarCrew Tiers 2 & 3
-**Status:** Archived
-**Reason:** Jason Cohen debunked content-to-customer funnels. Tier 1 (consulting) IS the business. Cohorts and platform are premature.
-
-### Skool Community ($150/month)
-**Status:** Archived
-**Reason:** Picking up pennies vs. $5K sessions. Wrong price, wrong platform.
-
-### Bookspace Video Plan
-**Status:** Archived
-**Reason:** Creative project, not revenue. Can revisit when consulting is stable.
-
----
-
-## Future (Only After Revenue Is Stable)
-
-- Heartbeat proactive system ($2K add-on)
-- n8n automation pipelines ($3K add-on)
-- Custom skill development ($1-2K per skill)
-- VPS setup with self-hosted tools ($3K)
-
-
 #### FRAMES.md
 # FRAMES
 
@@ -228,13 +203,6 @@ Every philosopher in the vault warns that the consulting→cohort→platform lad
 **Now believe:** The gap between who I build SNAP for (deeply technical power user) and that target market is enormous. The right clients are CTOs, technical founders, and senior engineers who want their own Ekko.
 **What changed my mind:** Hidden Threads Thread 3 — "SNAP Is The Product, You Just Haven't Named It." Hormozi: "Sell to the rich." Cohen: "B2B markets are fundamentally more conducive to sustainable self-funded startups."
 
-## Still Processing
-
-### "I need to fully eat my own cooking before selling"
-**Possibly wrong because:** The product works. I use it daily. 45 skills, 25 hooks, 167 workflows. The Telos system is being built right now — but the Build Session doesn't require my Telos to be complete, it requires the client's to be started. This might be "I need to build more before I can sell" in disguise.
-
-### "Weekend sessions are the only scheduling option"
-**Possibly wrong because:** Haven't actually tested. Some technical leaders might prefer a Tuesday evening deep-work block. $5K justifies flexible scheduling from both sides.
 
 ---
 

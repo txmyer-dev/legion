@@ -71,40 +71,12 @@ Every request goes through The Algorithm. Without the FormatReminder hook, class
 4. **Research Before Building** — Before building anything new, spend 60 seconds checking: Does this exist as a managed service? A Coolify one-click app? A mature OSS tool?
 5. **No Fixes Without Root Cause** — Never change code to "try something." Understand WHY first. If 3+ attempts fail on same issue, stop — it's architectural.
 
-## mem0 — Persistent Memory API
-
-Shared memory layer. Gemini CLI (Daemos) shares this same memory store.
-
-**Auth:** `X-API-Key: 1c3da8d69998beeeb8213f640bfeb9bfee5fe09b17a7935b`
-**User ID:** `tony`
-
-```bash
-# Store a memory
-curl -s -X POST http://localhost:8000/memories \
-  -H "X-API-Key: 1c3da8d69998beeeb8213f640bfeb9bfee5fe09b17a7935b" \
-  -H "Content-Type: application/json" \
-  -d '{"messages": [{"role": "user", "content": "THE FACT TO REMEMBER"}], "user_id": "tony"}'
-
-# Search memories (semantic)
-curl -s -X POST http://localhost:8000/search \
-  -H "X-API-Key: 1c3da8d69998beeeb8213f640bfeb9bfee5fe09b17a7935b" \
-  -H "Content-Type: application/json" \
-  -d '{"query": "SEARCH TERM", "user_id": "tony"}'
-
-# Get all memories
-curl -s "http://localhost:8000/memories?user_id=tony" \
-  -H "X-API-Key: 1c3da8d69998beeeb8213f640bfeb9bfee5fe09b17a7935b"
-```
-
-**MANDATORY — Write as you work:** After completing any infrastructure change, config change, decision, debugging resolution, or learning something new — write it to mem0 immediately. Do not wait. Do not batch.
-
 ## Context Files
 
 For deeper context, read these files in this directory:
 
 | File | What It Contains |
 |------|-----------------|
-| `identity/KAI.md` | Soul file — who Ekko is, values, learnings, relationship with Tony |
 | `context/ALGORITHM.md` | Full 7-phase Algorithm protocol |
 | `context/TECHSTACK.md` | Tony's tech stack, infrastructure, tool preferences |
 | `context/RESPONSEFORMAT.md` | How to format responses |
@@ -152,23 +124,11 @@ Tony's technology stack, infrastructure, and tool preferences.
 | Package Manager | **Bun** | `bun install`, `bun run`, `bun test` |
 | Python Package Manager | **UV** | Used for faster-whisper and Python utilities |
 
-## Frameworks
-
-- **Hono** — lightweight, runs on Cloudflare Workers
-- **Express** — familiar fallback
-
-## Databases
-
-| Type | Preference | Use Case |
-|------|------------|----------|
-| Document/KV | **Obsidian vault** (markdown files) | Primary knowledge store (local machine) |
-| Relational | **PostgreSQL** | When structured data needed |
-
 ## Cloud & Infrastructure
 
 ### VPS / Self-Hosting
 - **Hostinger** — web hosting VPS
-- **GCP1** — AI compute (Paperclip, mem0, vector index)
+- **GCP1** — AI compute (Paperclip, Ekko, Postgres, etc)
 - **Coolify** — container orchestration on Hostinger
 - **Philosophy:** Own the server, own the data. Self-host where practical.
 
@@ -241,11 +201,6 @@ Direct response. No ceremony. Just answer the question or do the thing.
 - [x] RESULTS
 - [x] STATUS
 - [x] NEXT (recommended next steps)
-
-### What NOT to Include
-- No voice lines or TTS references
-- No rating prompts unless Tony asks
-- No story explanations unless the situation is genuinely complex
 
 ## When to Use Each Format
 

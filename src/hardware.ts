@@ -1,7 +1,5 @@
 import path from 'path';
 
-// Add local sox binary to PATH so child_process and node-record-lpcm16 can find it
-process.env.PATH = `${path.join(__dirname, '../sox-bin')};${process.env.PATH}`;
 
 export interface Speaker {
   write(buffer: Buffer): void;

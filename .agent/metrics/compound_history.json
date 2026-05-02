@@ -1,0 +1,83 @@
+[
+  {
+    "date": "2026-05-02",
+    "solutions": {
+      "total": 3,
+      "hit_rate": 100,
+      "zombies": 34
+    },
+    "workflows": {
+      "invocations": 2,
+      "top": [
+        {
+          "name": "/plan",
+          "count": 1
+        },
+        {
+          "name": "/housekeeping",
+          "count": 1
+        }
+      ],
+      "unused_count": 36,
+      "unused": [
+        "/adr",
+        "/audit-security",
+        "/bench",
+        "/changelog",
+        "/compound-health",
+        "/compound",
+        "/consolidate",
+        "/create-agent-skill",
+        "/cycle",
+        "/deploy-docs",
+        "/doc",
+        "/emergency",
+        "/explore",
+        "/generate-command",
+        "/heal-skill",
+        "/help",
+        "/onboard",
+        "/plan-review",
+        "/promote-pattern",
+        "/refactor",
+        "/release-docs",
+        "/release",
+        "/report-bug",
+        "/reproduce-bug",
+        "/resolve-pr",
+        "/resolve-todo",
+        "/review",
+        "/route",
+        "/skill-review",
+        "/specs",
+        "/triage-sprint",
+        "/triage",
+        "/ui-ux-pro-max",
+        "/visualize-flow",
+        "/work",
+        "/xcode-test"
+      ]
+    },
+    "skills": {
+      "invocations": 19,
+      "top": [
+        {
+          "name": "pattern-validation",
+          "count": 19
+        }
+      ]
+    },
+    "todos": {
+      "active": 1,
+      "avg_quality": 1
+    },
+    "drift": {
+      "plan_drift": 0,
+      "spec_drift": 0
+    },
+    "explorations": {
+      "count": 0
+    },
+    "health_grade": "D"
+  }
+]

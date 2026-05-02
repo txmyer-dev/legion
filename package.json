@@ -10,7 +10,7 @@
   "scripts": {
     "start:gateway": "bun run src/index.ts gateway",
     "start:node": "bun run src/index.ts node",
-    "start:gui": "bunx electron ./src/gui.ts"
+    "start:gui": "bun run scripts/build-gui.ts && bunx electron ./dist/gui.js"
   },
   "peerDependencies": {
     "typescript": "^5"

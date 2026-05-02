@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import { executeTool } from './tools';
+import { pluginManager } from './plugins/index';
 import { loadPersona } from './personaLoader';
 import type { HardwareAbstractionLayer, Speaker } from './hardware';
 import { TranscriptLogger } from './logger';
@@ -75,126 +75,7 @@ export class LegionOrchestrator {
       },
       tools: [
         {
-          functionDeclarations: [
-            {
-              name: "get_tasks",
-              description: "Fetch the user's open tasks from Todoist.",
-              parameters: {
-                type: "OBJECT",
-                properties: {}
-              }
-            },
-            {
-              name: "add_task",
-              description: "Add a new task to Todoist.",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  content: { type: "STRING", description: "The task name/content" },
-                  description: { type: "STRING", description: "Optional description" },
-                  due_string: { type: "STRING", description: "Optional due date like 'tomorrow at 12pm'" }
-                },
-                required: ["content"]
-              }
-            },
-            {
-              name: "read_note",
-              description: "Read a markdown note from the user's Obsidian SecondBrain vault.",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  path: { type: "STRING", description: "Relative path to the note (e.g., 'Ideas/Project.md')" }
-                },
-                required: ["path"]
-              }
-            },
-            {
-              name: "append_note",
-              description: "Append content to an existing markdown note in the Obsidian vault.",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  path: { type: "STRING", description: "Relative path to the note (e.g., 'Ideas/Project.md')" },
-                  content: { type: "STRING", description: "The markdown content to append" }
-                },
-                required: ["path", "content"]
-              }
-            },
-            {
-              name: "execute_local_command",
-              description: "Execute a safe local bash command.",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  command: { type: "STRING" }
-                },
-                required: ["command"]
-              }
-            },
-            {
-              name: "manipulate_browser",
-              description: "Perform an action on the headless browser.",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  action: { type: "STRING", description: "goto, click, type, extract, screenshot, close" },
-                  url: { type: "STRING" },
-                  selector: { type: "STRING" },
-                  value: { type: "STRING" }
-                },
-                required: ["action"]
-              }
-            },
-            {
-              name: "get_weather",
-              description: "Get the current weather for a specific location.",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  location: { type: "STRING", description: "The city or location to get the weather for." }
-                }
-              }
-            },
-            {
-              name: "manage_calendar",
-              description: "Manage Google Calendar events.",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  action: { type: "STRING", description: "list_events, create_event" },
-                  maxResults: { type: "INTEGER", description: "Max events to list" },
-                  summary: { type: "STRING", description: "Event title" },
-                  description: { type: "STRING", description: "Event description" },
-                  start: { type: "STRING", description: "ISO string for event start" },
-                  end: { type: "STRING", description: "ISO string for event end" }
-                },
-                required: ["action"]
-              }
-            },
-            {
-              name: "trigger_compound_workflow",
-              description: "Trigger a local compound workflow shell script (e.g., compound-dashboard, compound-health).",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  workflow: { type: "STRING", description: "The name of the workflow script without the .sh extension (e.g. 'compound-dashboard', 'update-solution-ref')" }
-                },
-                required: ["workflow"]
-              }
-            },
-            {
-              name: "generate_image",
-              description: "Generate an image using DALL-E 3 based on a text prompt.",
-              parameters: {
-                type: "OBJECT",
-                properties: {
-                  prompt: { type: "STRING", description: "The descriptive text prompt for the image." },
-                  size: { type: "STRING", description: "The size of the image, e.g., '1024x1024'" }
-                },
-                required: ["prompt"]
-              }
-            }
-          ]
+          functionDeclarations: pluginManager.getFunctionDeclarations()
         }
       ]
     };
@@ -292,7 +173,7 @@ export class LegionOrchestrator {
                 this.logger.log('System', callLog);
                 
                 try {
-                  const result = await executeTool(call.name, call.args);
+                  const result = await pluginManager.executeTool(call.name, call.args);
                   this.session.sendToolResponse({
                     functionResponses: [
                       {

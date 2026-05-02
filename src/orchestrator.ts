@@ -5,6 +5,16 @@ import { skillLoader } from './skillLoader';
 import type { HardwareAbstractionLayer, Speaker } from './hardware';
 import { TranscriptLogger } from './logger';
 
+// Gemini Live API rejects tool responses that are too large (1008 error).
+// Cap all tool responses at 8KB to keep the session stable.
+const MAX_TOOL_RESPONSE_BYTES = 8192;
+function truncateToolResult(result: any): any {
+  const json = JSON.stringify(result);
+  if (json.length <= MAX_TOOL_RESPONSE_BYTES) return result;
+  const truncated = json.slice(0, MAX_TOOL_RESPONSE_BYTES);
+  return { truncated: true, note: `Response truncated to ${MAX_TOOL_RESPONSE_BYTES} bytes`, data: truncated };
+}
+
 export class LegionOrchestrator {
   private ai: GoogleGenAI;
   private session: any; // Session object from @google/genai
@@ -174,7 +184,8 @@ export class LegionOrchestrator {
                 this.logger.log('System', callLog);
                 
                 try {
-                  const result = await pluginManager.executeTool(call.name, call.args);
+                  const raw = await pluginManager.executeTool(call.name, call.args);
+                  const result = truncateToolResult(raw);
                   this.session.sendToolResponse({
                     functionResponses: [
                       {

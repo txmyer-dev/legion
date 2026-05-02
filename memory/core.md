@@ -26,3 +26,9 @@
 ## Goals
 
 <!-- Long-term goals and projects Ekko is tracking -->
+
+---
+
+## TEST
+
+Testing memory write: Discipline Equals Freedom.

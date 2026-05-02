@@ -50,6 +50,7 @@ This directory contains automation scripts that power the agent workflows. They 
 - **`update-spec-phase.sh`**: Manages specification lifecycles.
 - **`next-todo-id.sh`**: Generates unique IDs for todos.
 - **`generate-changelog.js`**: Generates a changelog from conventional commits.
+- **`build-gui.ts`**: Builds the GUI component.
 
 ## Component Details
 
@@ -58,6 +59,10 @@ Detailed usage instructions for scripts are embedded in the scripts themselves v
 ### `generate-changelog.js`
 
 Generates a changelog based on conventional commits in the repository.
+
+### `build-gui.ts`
+
+Builds the GUI component for the application.
 
 ## Usage
 
@@ -68,6 +73,9 @@ Most scripts are designed to be run via the agent workflows (e.g. `/work`, `/hou
 ```
 
 ## Changelog
+
+### 2026-05-02
+- Added build-gui.ts to documentation.
 
 ### 2026-05-01
 - Updated documentation sections for validation requirements.

@@ -73,3 +73,11 @@ The world is splitting into two groups: people who have AI infrastructure and pe
 Deeper context lives in Ekko's memory and can be read on demand:
 - Use `read_memory` with section "Beliefs", "Wisdom", "Frames", "Models", "Lessons", "Challenges" for full philosophical context
 - Full Telos vault lives outside this repo — will be connected when available
+
+## Environment / Secrets
+
+Canonical secrets file: `personas/ekko-project/.env`
+
+This is the **only** `.env` that needs to be maintained. It is loaded first at boot, before the project root and `~/.env` fallbacks. Add all API keys here — do not scatter them across multiple `.env` files.
+
+This file is gitignored.

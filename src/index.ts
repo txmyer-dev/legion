@@ -4,9 +4,12 @@ import os from 'os';
 import { startGateway } from './gateway';
 import { startNode } from './node';
 
-// Load local .env
+// Load env in priority order (first match wins for each key):
+// 1. Persona-specific .env — canonical secrets location
+dotenv.config({ path: path.join(process.cwd(), 'personas/ekko-project/.env') });
+// 2. Project root .env fallback
 dotenv.config();
-// Fallback to ~/.env
+// 3. Home directory .env fallback
 dotenv.config({ path: path.join(os.homedir(), '.env') });
 
 const mode = process.argv[2];

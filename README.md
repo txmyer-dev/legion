@@ -14,8 +14,7 @@
 [![Built with Gemini](https://img.shields.io/badge/Built_with-Gemini-4285F4?style=flat&logo=google&logoColor=white)](https://aistudio.google.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Bun](https://img.shields.io/badge/Bun-000000?style=flat&logo=bun&logoColor=white)](https://bun.sh)
-[![Windows 11](https://img.shields.io/badge/Windows-0078D6?style=flat&logo=windows&logoColor=white)](https://windows.com)
-
+[![Linux (GCP1)](https://img.shields.io/badge/Linux-FCC624?style=flat&logo=linux&logoColor=black)](https://ubuntu.com)
 <br/>
 
 **Overview:** [Purpose](#the-purpose-of-legion) · [What is Legion?](#what-is-legion) · [Principles](#the-legion-principles) · [Primitives](#legion-primitives)
@@ -27,7 +26,7 @@
 </div>
 
 > [!IMPORTANT]
-> **Legion — Life Operating System** — A high-performance, multimodal AI agent framework powered by the **Gemini 2.0 Flash Multimodal Live API**. It is designed for low-latency voice interaction, featuring a secure command execution sandbox and a modular persona system optimized for Windows 11 host environments.
+> **Legion — Life Operating System** — A high-performance, multimodal AI agent framework powered by the **Gemini 2.0 Flash Multimodal Live API**. It is designed for low-latency voice interaction, featuring a secure command execution sandbox, hotkey-based activation (`Ctrl+Shift+L`), and a modular persona system optimized for Linux (GCP1) host environments.
 
 <div align="center">
 
@@ -60,12 +59,12 @@ These principles guide how Legion is designed and built:
 Legion's architecture relies on core primitives that make it function as a unified Life OS rather than a disjointed toolset.
 
 ### 🎙️ Hardware Abstraction Layer (HAL)
-The HAL (`hardware.ts`) isolates OS-specific audio capture and playback. This ensures that the core orchestration logic remains platform-agnostic, enabling seamless operation on Windows 11 while supporting future mocking for Test-Driven Development (TDD).
+The HAL (`src/hardware.ts`) isolates OS-specific audio and video capture using Python sub-processes (`pyaudio` and OpenCV). This ensures the core orchestration logic remains modular. A Python-based hotkey listener triggers the system manually (`Ctrl+Shift+L`).
 
-### 🛡️ Secure Windows Sandbox
-Legion includes a robust security boundary (`tools.ts`) for local command execution:
-- **Path Validation**: All file operations are constrained to a `SECURE_ROOT` using `path.win32` resolution logic to prevent directory traversal.
-- **Command Whitelist**: Only safe, verified commands are permitted.
+### 🛡️ Secure Command Sandbox
+Legion includes a robust security boundary for local command execution (`src/plugins/system.ts`):
+- **Path Validation**: File operations are securely constrained.
+- **Command Execution**: Only verified and user-approved bash commands are executed locally.
 
 ### 🎭 Modular Persona System
 Agent identities are not hardcoded. The `personaLoader.ts` dynamically assembles system instructions from modular markdown files in `personas/` (such as `identity`, `rules`, and `telos`). This allows for complex, identity-driven behavior.
@@ -85,21 +84,25 @@ See [GEMINI.md](./GEMINI.md) for the full protocol.
 
 ### Prerequisites
 - **[Bun](https://bun.sh/)**: The primary runtime for Legion.
-- **[SoX](https://sourceforge.net/projects/sox/)**: Required for microphone capture on Windows. Ensure `sox` is in your system `PATH`.
-- **Gemini API Key**: Obtain from [Google AI Studio](https://aistudio.google.com/).
+- **Python 3.10+**: Used for the hardware layer and hotkey detection (with `pyaudio`, `opencv-python`, `keyboard`).
+- **Google Cloud Account**: Required for GCP Secret Manager.
 
 ### Setup
 
-```powershell
+```bash
 # 1. Clone and install dependencies
 bun install
 
-# 2. Configure environment
-copy .env.example .env
-# Add your GEMINI_API_KEY to .env
+# 2. Configure environment (Single-Secret JSON Pattern)
+# Create a secret named `LEGION_EKKO_SECRETS` in GCP Secret Manager containing:
+# { "GEMINI_API_KEY": "...", "GITHUB_TOKEN": "...", "TODOIST_API_TOKEN": "..." }
+# Ensure you are authenticated via `gcloud auth application-default login`
 
-# 3. Launch the Legion Daemon
-bun index.ts
+# 3. Launch the Legion Gateway (Orchestrator)
+bun run start:gateway
+
+# 4. In a new terminal, launch the Legion Node (Hardware/Audio)
+bun run start:node
 ```
 
 ---
@@ -107,10 +110,10 @@ bun index.ts
 ## 🔧 Customization
 
 ### Adding a Persona
-Create a new directory in `personas/` with a `CLAUDE.md` and optional sub-directories for `identity`, `rules`, and `telos`. The `personaLoader` will automatically compile these into a unified system instruction.
+Create a new directory in `personas/` with a `AGENTS.md`, `SOUL.md`, and optional configurations. The `personaLoader` will automatically compile these into a unified system instruction.
 
 ### Extending Tools
-Add new capabilities to the `executeTool` function in `tools.ts` and register their `functionDeclarations` in the `setup` message within `index.ts`.
+Add new capabilities by creating a new plugin in the `src/plugins/` directory and exporting a `LegionPlugin` interface. Register your plugin by adding it to the exported array in `src/plugins/index.ts`.
 
 ---
 

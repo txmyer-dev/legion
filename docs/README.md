@@ -16,5 +16,8 @@ This directory contains the project's documentation and knowledge base, serving 
 
 ## Changelog
 
+### 2026-05-02
+- Moved `PROJECT-SPEC.md` and `output_wisdom.md` into this directory during pre-push housekeeping.
+
 - **2025-12-27**: Added session documentation structure.
 - **2025-12-23**: Initial structure established.

@@ -20,6 +20,11 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .env.*
 *.bak
 
+# secrets and credentials
+*secret*.json
+*credentials*.json
+legion_secrets.json
+
 # caches
 .eslintcache
 .cache

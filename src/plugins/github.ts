@@ -1,9 +1,8 @@
 import https from 'https';
 import type { LegionPlugin } from './index';
 
-const GH_TOKEN = process.env.GITHUB_TOKEN;
-
 function ghRequest(path: string, method = 'GET', body?: any): Promise<any> {
+    const GH_TOKEN = process.env.GITHUB_TOKEN;
     return new Promise((resolve, reject) => {
         const options = {
             hostname: 'api.github.com',
@@ -76,7 +75,7 @@ export const ghCreateIssuePlugin: LegionPlugin = {
         }
     },
     execute: async (args: any) => {
-        if (!GH_TOKEN) return { error: "GITHUB_TOKEN not set." };
+        if (!process.env.GITHUB_TOKEN) return { error: "GITHUB_TOKEN not set." };
         if (!args?.repo || !args?.title) return { error: "repo and title required." };
         const payload: any = { title: args.title };
         if (args.body) payload.body = args.body;

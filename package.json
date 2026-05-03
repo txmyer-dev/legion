@@ -18,8 +18,6 @@
   "dependencies": {
     "@google-cloud/secret-manager": "^6.1.2",
     "@google/genai": "^1.51.0",
-    "@picovoice/porcupine-node": "^4.0.2",
-    "@picovoice/pvrecorder-node": "^1.2.8",
     "@types/ws": "^8.18.1",
     "dotenv": "^17.4.2",
     "googleapis": "^171.4.0",

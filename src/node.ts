@@ -1,6 +1,5 @@
 import WebSocket from 'ws';
 import { NodeHardwareLayer } from './hardware';
-import { WakeWordEngine } from './wake_word';
 import { spawn, ChildProcess } from 'child_process';
 import path from 'path';
 
@@ -20,8 +19,8 @@ export function startNode(gatewayUrl: string = 'ws://localhost:9090'): () => voi
     setTimeout(() => { isWaking = false; }, 3000);
   };
 
-  const wakeWordEngine = new WakeWordEngine(triggerWakeWord);
   
+
   const path = require('path');
   const hotkeyProc: ChildProcess = spawn('python', [path.join(__dirname, '../python/hotkey.py')]);
   hotkeyProc.stdout?.on('data', (data) => {
@@ -34,7 +33,6 @@ export function startNode(gatewayUrl: string = 'ws://localhost:9090'): () => voi
   ws.on('open', () => {
     console.log("Connected to Legion Gateway!");
     console.log("Press Ctrl+Shift+L to trigger manually.");
-    wakeWordEngine.start();
   });
 
   ws.on('message', (message: string) => {
@@ -86,7 +84,6 @@ export function startNode(gatewayUrl: string = 'ws://localhost:9090'): () => voi
 
   ws.on('close', () => {
     console.log("Disconnected from Gateway. Shutting down hardware...");
-    wakeWordEngine.stop();
     hotkeyProc.kill();
     hal.stopRecording();
     hal.stopVideo();
@@ -101,7 +98,6 @@ export function startNode(gatewayUrl: string = 'ws://localhost:9090'): () => voi
   // Handle graceful exit
   process.on('SIGINT', () => {
     console.log("\nNode shutting down gracefully...");
-    wakeWordEngine.stop();
     hotkeyProc.kill();
     hal.stopRecording();
     hal.stopVideo();

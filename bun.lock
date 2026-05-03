@@ -7,8 +7,6 @@
       "dependencies": {
         "@google-cloud/secret-manager": "^6.1.2",
         "@google/genai": "^1.51.0",
-        "@picovoice/porcupine-node": "^4.0.2",
-        "@picovoice/pvrecorder-node": "^1.2.8",
         "@types/ws": "^8.18.1",
         "dotenv": "^17.4.2",
         "googleapis": "^171.4.0",
@@ -38,10 +36,6 @@
     "@isaacs/cliui": ["@isaacs/cliui@8.0.2", "", { "dependencies": { "string-width": "^5.1.2", "string-width-cjs": "npm:string-width@^4.2.0", "strip-ansi": "^7.0.1", "strip-ansi-cjs": "npm:strip-ansi@^6.0.1", "wrap-ansi": "^8.1.0", "wrap-ansi-cjs": "npm:wrap-ansi@^7.0.0" } }, "sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA=="],
 
     "@js-sdsl/ordered-map": ["@js-sdsl/ordered-map@4.4.2", "", {}, "sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw=="],
-
-    "@picovoice/porcupine-node": ["@picovoice/porcupine-node@4.0.2", "", { "cpu": [ "!ppc", "!ia32", "!mips", "!ppc64", ] }, "sha512-iGvjjmwERw1WpGrgFNZ46PlAzASXab+KqOu02p/RVs0+v6dL9JDQDhcYmGSXEqj+6dzJ08UsveYFySj+CFCYlQ=="],
-
-    "@picovoice/pvrecorder-node": ["@picovoice/pvrecorder-node@1.2.8", "", {}, "sha512-dbLJlplQQNRkM2ja/hP4sRADGDILuJ54dEf8cU5eULeNrddxXvOtE8IiJ5F2VhhbXmIv3Qmn79DqhttCOxjH8Q=="],
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
 

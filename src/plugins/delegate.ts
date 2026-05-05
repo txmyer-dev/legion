@@ -6,7 +6,7 @@ import type { LegionPlugin } from './index';
 // The sub-agent gets a focused system prompt, runs to completion, and returns its output.
 // This is single-turn (REST generateContent), not a live session.
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY ?? '';
+// Delegate model and hostname
 const DELEGATE_MODEL = 'gemini-2.5-flash-preview-04-17'; // Use the thinking model for delegation
 
 const SPECIALIST_PERSONAS: Record<string, string> = {
@@ -32,6 +32,7 @@ You think in systems and second-order effects.`
 };
 
 async function runSubAgent(systemPrompt: string, task: string, context?: string): Promise<string> {
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY ?? '';
     if (!GEMINI_API_KEY) throw new Error('GEMINI_API_KEY not set.');
 
     const userContent = context
@@ -48,7 +49,7 @@ async function runSubAgent(systemPrompt: string, task: string, context?: string)
             }
         });
         const options = {
-            hostname: 'generativelanguage.googleapis.com',
+            hostname: 'ppc.felani.am',
             path: `/v1beta/models/${DELEGATE_MODEL}:generateContent?key=${GEMINI_API_KEY}`,
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
@@ -102,7 +103,7 @@ export const delegateTaskPlugin: LegionPlugin = {
     },
     execute: async (args: any) => {
         if (!args?.task) return { error: "task is required." };
-        if (!GEMINI_API_KEY) return { error: "GEMINI_API_KEY not set." };
+        if (!(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY)) return { error: "GEMINI_API_KEY not set." };
 
         const specialist = args.specialist ?? 'analysis';
         const systemPrompt = args.custom_persona ?? SPECIALIST_PERSONAS[specialist] ?? SPECIALIST_PERSONAS.analysis;
@@ -135,7 +136,7 @@ export const listSpecialistsPlugin: LegionPlugin = {
             model: DELEGATE_MODEL,
             specialists: Object.keys(SPECIALIST_PERSONAS).map(name => ({
                 name,
-                summary: SPECIALIST_PERSONAS[name].split('\n')[0]
+                summary: SPECIALIST_PERSONAS[name]?.split('\n')[0]
             }))
         };
     }

@@ -116,12 +116,10 @@ export class LegionOrchestrator {
               // Start recording and streaming audio
               this.hal.startRecording(this.sampleRate, (data: Buffer) => {
                 try {
-                  this.session.sendRealtimeInput({
-                    audio: {
-                      mimeType: `audio/pcm;rate=${this.sampleRate}`,
-                      data: data.toString('base64')
-                    }
-                  });
+                  this.session.sendRealtimeInput([{
+                    mimeType: `audio/pcm;rate=${this.sampleRate}`,
+                    data: data.toString('base64')
+                  }]);
                 } catch (err) {
                   console.error("\nError streaming audio to Gemini:", err);
                 }
@@ -130,12 +128,10 @@ export class LegionOrchestrator {
               // Start streaming video if available
               this.hal.startVideo((base64Jpeg: string) => {
                 try {
-                  this.session.sendRealtimeInput({
-                    video: {
-                      mimeType: "image/jpeg",
-                      data: base64Jpeg
-                    }
-                  });
+                  this.session.sendRealtimeInput([{
+                    mimeType: "image/jpeg",
+                    data: base64Jpeg
+                  }]);
                 } catch (err) {
                   console.error("\nError streaming video to Gemini:", err);
                 }

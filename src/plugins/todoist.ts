@@ -72,4 +72,56 @@ export const addTaskPlugin: LegionPlugin = {
     }
 };
 
-export default [getTasksPlugin, addTaskPlugin];
+export const completeTaskPlugin: LegionPlugin = {
+    declaration: {
+        name: "complete_task",
+        description: "Mark a Todoist task as complete.",
+        parameters: {
+            type: "OBJECT",
+            properties: {
+                id: { type: "STRING", description: "The ID of the task to complete" }
+            },
+            required: ["id"]
+        }
+    },
+    execute: async (args: any) => {
+        const apiKey = process.env.TODOIST_API_TOKEN;
+        if (!apiKey) return { error: "TODOIST_API_TOKEN not found." };
+        if (!args || !args.id) return { error: "Task id required." };
+        
+        const response = await fetch(`https://api.todoist.com/api/v1/tasks/${args.id}/close`, {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${apiKey}` }
+        });
+        if (!response.ok) return { error: `Todoist API error: ${response.statusText}` };
+        return { success: true, message: `Task ${args.id} completed.` };
+    }
+};
+
+export const removeTaskPlugin: LegionPlugin = {
+    declaration: {
+        name: "remove_task",
+        description: "Delete a Todoist task.",
+        parameters: {
+            type: "OBJECT",
+            properties: {
+                id: { type: "STRING", description: "The ID of the task to delete" }
+            },
+            required: ["id"]
+        }
+    },
+    execute: async (args: any) => {
+        const apiKey = process.env.TODOIST_API_TOKEN;
+        if (!apiKey) return { error: "TODOIST_API_TOKEN not found." };
+        if (!args || !args.id) return { error: "Task id required." };
+        
+        const response = await fetch(`https://api.todoist.com/api/v1/tasks/${args.id}`, {
+            method: "DELETE",
+            headers: { "Authorization": `Bearer ${apiKey}` }
+        });
+        if (!response.ok) return { error: `Todoist API error: ${response.statusText}` };
+        return { success: true, message: `Task ${args.id} deleted.` };
+    }
+};
+
+export default [getTasksPlugin, addTaskPlugin, completeTaskPlugin, removeTaskPlugin];
